@@ -1,0 +1,102 @@
+// UniDash database schema
+// Campus delivery app connecting students, retailers, and riders
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role: "STUDENT" | "RETAILER" | "RIDER"
+// OrderStatus: "PENDING" | "ACCEPTED" | "PREPARING" | "READY_FOR_PICKUP"
+//            | "PICKED_UP" | "OUT_FOR_DELIVERY" | "DELIVERED" | "CANCELLED"
+// (SQLite does not support enums; stored as strings and validated in app code.)
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         String   // "STUDENT" | "RETAILER" | "RIDER"
+  createdAt    DateTime @default(now())
+
+  // Student-only
+  hostel       String?
+  roomNumber   String?
+
+  // Retailer-only
+  retailer     Retailer?
+
+  // Rider-only
+  riderStatus  String?  // "AVAILABLE" | "BUSY" | "OFFLINE"
+
+  studentOrders Order[] @relation("StudentOrders")
+  riderOrders   Order[] @relation("RiderOrders")
+}
+
+model Retailer {
+  id          String    @id @default(cuid())
+  ownerId     String    @unique
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  shopName    String
+  description String?
+  location    String?
+  createdAt   DateTime  @default(now())
+  products    Product[]
+  orders      Order[]
+}
+
+model Product {
+  id          String       @id @default(cuid())
+  retailerId  String
+  retailer    Retailer     @relation(fields: [retailerId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  priceCents  Int
+  imageUrl    String?
+  available   Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id             String       @id @default(cuid())
+  studentId      String
+  student        User         @relation("StudentOrders", fields: [studentId], references: [id])
+  retailerId     String
+  retailer       Retailer     @relation(fields: [retailerId], references: [id])
+  riderId        String?
+  rider          User?        @relation("RiderOrders", fields: [riderId], references: [id])
+  status         String       @default("PENDING")
+  totalCents     Int
+  deliveryAddr   String
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  items          OrderItem[]
+  events         OrderEvent[]
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product @relation(fields: [productId], references: [id])
+  nameSnap   String
+  priceCents Int
+  quantity   Int
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  note      String?
+  createdAt DateTime @default(now())
+}
