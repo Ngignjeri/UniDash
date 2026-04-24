@@ -1,101 +1,120 @@
+import Link from "next/link";
 import Image from "next/image";
+import { AppHeader } from "@/components/AppHeader";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div>
+      <AppHeader />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section className="relative overflow-hidden bg-ink-900 text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(240,180,41,0.25),transparent_60%)]" />
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-24">
+          <div className="flex flex-col justify-center">
+            <span className="mb-4 inline-flex w-fit items-center rounded-full bg-brand-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-400">
+              Campus delivery made fast
+            </span>
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+              Your campus{" "}
+              <span className="text-brand-400">essentials</span>, delivered in
+              minutes.
+            </h1>
+            <p className="mt-4 max-w-xl text-ink-200">
+              UniDash connects students, campus retailers, and student riders
+              in one simple app. Order food, groceries, and supplies — or earn
+              by delivering between classes.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/register" className="btn-primary px-5 py-3 text-base">
+                Get started
+              </Link>
+              <Link href="/login" className="btn-outline border-ink-700 bg-ink-800 px-5 py-3 text-base text-white hover:bg-ink-700">
+                Sign in
+              </Link>
+            </div>
+          </div>
+          <div className="relative flex items-center justify-center">
+            <div className="relative w-full max-w-md rounded-2xl bg-ink-800/60 p-6 ring-1 ring-ink-700 backdrop-blur">
+              <Image
+                src="/unidash-logo.png"
+                alt="UniDash"
+                width={800}
+                height={200}
+                priority
+                className="h-auto w-full"
+              />
+              <div className="mt-6 grid grid-cols-3 gap-3 text-center">
+                <RoleTile title="Students" desc="Order" />
+                <RoleTile title="Retailers" desc="Sell" />
+                <RoleTile title="Riders" desc="Earn" />
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h2 className="text-2xl font-bold text-ink-900">
+          One app. Three roles. Everything moves.
+        </h2>
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <Feature
+            title="Students"
+            body="Browse campus shops, build your cart, place orders, and watch your delivery progress in real time."
+            cta={{ href: "/register?role=STUDENT", label: "Order now" }}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <Feature
+            title="Retailers"
+            body="Add products, manage availability, accept incoming orders, and mark them ready for pickup."
+            cta={{ href: "/register?role=RETAILER", label: "Open a shop" }}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <Feature
+            title="Riders"
+            body="See orders ready for pickup, accept the ones that work for you, and get paid per delivery."
+            cta={{ href: "/register?role=RIDER", label: "Become a rider" }}
           />
-          Go to nextjs.org →
-        </a>
+        </div>
+      </section>
+
+      <footer className="border-t border-ink-200 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-ink-500 sm:px-6">
+          © {new Date().getFullYear()} UniDash. Campus delivery made fast.
+        </div>
       </footer>
+    </div>
+  );
+}
+
+function RoleTile({ title, desc }: { title: string; desc: string }) {
+  return (
+    <div className="rounded-lg bg-ink-900/60 p-3 ring-1 ring-ink-700">
+      <div className="text-xs font-semibold uppercase tracking-wider text-brand-400">
+        {desc}
+      </div>
+      <div className="mt-1 text-sm font-semibold text-white">{title}</div>
+    </div>
+  );
+}
+
+function Feature({
+  title,
+  body,
+  cta,
+}: {
+  title: string;
+  body: string;
+  cta: { href: string; label: string };
+}) {
+  return (
+    <div className="card p-6">
+      <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+        <span className="text-lg font-bold">{title[0]}</span>
+      </div>
+      <h3 className="text-lg font-semibold text-ink-900">{title}</h3>
+      <p className="mt-2 text-sm text-ink-600">{body}</p>
+      <Link href={cta.href} className="mt-4 inline-flex text-sm font-semibold text-brand-700 hover:text-brand-600">
+        {cta.label} →
+      </Link>
     </div>
   );
 }
